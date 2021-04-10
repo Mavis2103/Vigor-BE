@@ -1,27 +1,40 @@
 import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
+const { ObjectId } = mongoose.Schema.Types;
 
 const PostSchema = new Schema({
-	title: String,
-	creator: String,
-	selectedFile: String,
-	likeCount: {
-		type: Number,
-		default: 0,
-	},
-	likers: [String],
-	comments: {
-		type: [{
-			commenterId: String,
-			text: String,
-			timestamp: Number
-		}],
-	},
-	createdAt: {
-		type: Date,
-		default: Date.now,
-	}
+    title: String,
+    creator: {
+        type: ObjectId,
+        ref: 'User'
+    },
+    selectedFile: String,
+    selectedVidFile: String,
+    selectedAudFile: String,
+    likeCount: {
+        type: Number,
+        default: 0,
+    },
+    likers: [{
+        type: ObjectId,
+        ref: 'User'
+    }],
+    comments: [{
+        text: String,
+        creator: {
+            type: ObjectId,
+            ref: 'User'
+        }
+    }],
+    commentCount: {
+        type: Number,
+        default: 0
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    }
 });
 
 export default mongoose.model('Posts', PostSchema);

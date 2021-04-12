@@ -1,7 +1,7 @@
 import UserSchema from '../models/userDB.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import JWT_SECRET from '../../config/keys.js';
+// import JWT_SECRET from '../../config/keys.js';
 
 // Signup - POST
 export const signUp = async(req, res) => {

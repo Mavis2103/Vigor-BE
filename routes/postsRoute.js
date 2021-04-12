@@ -7,16 +7,18 @@ import { requireLogin } from '../middleware/requireLogin.js';
 
 const router = express.Router();
 
-// Get all posts
-router.get('/', requireLogin, getPost);
+router.route('/').get(requireLogin, getPost) //get all posts
+    .post(requireLogin, createPost) //create post
+    .put(requireLogin, comment); //comment
+
 // Get my posts
 router.get('/profile/myPosts', requireLogin, getMyPost);
 // Get other users posts
 router.get('/profile/:username/posts', requireLogin, getUserPost);
 // Get my following users posts
 router.get('/followingUser', requireLogin, getPostFollow);
-// Create a new post
-router.post('/', requireLogin, createPost);
+// Follow other users
+router.put('/follow', requireLogin, followOthers);
 // router.put('/profile/myPosts', requireLogin, )
 // Like post
 router.patch('/like', requireLogin, likePost);
@@ -24,14 +26,10 @@ router.patch('/like', requireLogin, likePost);
 router.get('/likers', requireLogin, getLikers);
 // Unlike post
 router.patch('/unlike', requireLogin, unLikePost);
-// Comment
-router.put('/', requireLogin, comment);
 // Delete posts
 router.delete('/:postId', requireLogin, deletePost);
 // Delete comment
 router.delete('/deleteComment/:postId/:commentId', requireLogin, deleteComment);
-// Follow other users
-router.put('/follow', requireLogin, followOthers);
 // Unfollow other users
 router.put('/unfollow', requireLogin, unFollowOthers);
 // Update profile picture
@@ -48,4 +46,10 @@ router.delete('/deletePlaylist/:playlistId', requireLogin, deletePlaylist);
 router.post('/register', signUp);
 router.post('/login', login);
 
+
+
+//Hashtag (create collection for hashtag)
+//Type (create collection for Type)
+//Playlist (add posts to playlist)
+//
 export default router;

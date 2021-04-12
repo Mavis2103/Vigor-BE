@@ -118,7 +118,7 @@ export const updateAvatar = (req, res) => {
 
 // Search user
 export const searchUser = (req, res) => {
-    let userRegex = new RegExp('^' + req.body.query);
+    let userRegex = new RegExp(req.body.query);
     UserSchema.find({
             username: { $regex: userRegex, $options: 'im' }
         })

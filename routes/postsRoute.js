@@ -1,7 +1,7 @@
 import express from 'express';
 import { login, signUp } from '../controllers/authControl.js';
 import { createPlaylist, deletePlaylist, getPlaylist } from '../controllers/playlistControl.js';
-import { comment, createPost, deleteComment, deletePost, getLikers, getMyPost, getPost, getPostFollow, likePost, unLikePost } from '../controllers/postControl.js';
+import { comment, createPost, deleteComment, deletePost, getLikers, getMyPost, getPost, getPostFollow, likePost, unLikePost,ListHashtag, PostWithHashtag } from '../controllers/postControl.js';
 import { followOthers, getUserPost, searchUser, unFollowOthers, updateAvatar } from '../controllers/userControl.js';
 import { requireLogin } from '../middleware/requireLogin.js';
 
@@ -45,6 +45,8 @@ router.delete('/deletePlaylist/:playlistId', requireLogin, deletePlaylist);
 // Auth route
 router.post('/register', signUp);
 router.post('/login', login);
+router.get('/hashtag', requireLogin,ListHashtag);
+router.get('/hashtag/:hashtag',requireLogin, PostWithHashtag);
 
 
 

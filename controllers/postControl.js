@@ -55,12 +55,15 @@ export const getMyPost = async(req, res) => {
 
 // Create a new post, createPost - POST
 export const createPost = (req, res) => {
+    let hashtag=[];
     try {
         // const post = await PostSchema(req.body).save();
         const { title, selectedFile, selectedVidFile, selectedAudFile, createdAt } = req.body;
         req.user.password = undefined;
+        hashtag = [...title.match(/\B(\#[a-zA-Z0-9]+\b)(?!;)/g)];
         const post = new PostSchema({
             title,
+            hashtag,
             creator: req.user,
             selectedFile,
             selectedVidFile,
@@ -74,8 +77,6 @@ export const createPost = (req, res) => {
             .catch(err => {
                 console.log(err);
             })
-            // if (!post) throw Error('Something went wrong!');
-            // res.status(201).json(post);
     } catch (error) {
         res.status(409).json({ msg: error });
     }
@@ -204,4 +205,29 @@ export const deleteComment = (req, res) => {
                 res.json(result);
             }
         });
+}
+export const ListHashtag = (req, res) =>{
+    let listHashtag = [];
+    PostSchema.find().exec((err, result)=>{
+        if (err) {
+            return res.status(422).json({ error: err })
+        }
+        else{
+            result.forEach(post => {
+                listHashtag = listHashtag.concat(post.hashtag)
+            });
+            res.json([...new Set(listHashtag)])
+        }
+    })
+}
+export const PostWithHashtag = (req, res) => {
+    let hashtag = req.query.hashtag
+    PostSchema.find().exec((err, result)=>{
+        if (err) {
+            return res.status(422).json({ error: err })
+        }
+        else{
+            res.json(result.filter(post => post.hashtag.includes(`${hashtag}`)))
+        }
+    })
 }

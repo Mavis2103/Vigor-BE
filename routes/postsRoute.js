@@ -28,6 +28,7 @@ import {
   searchUser,
   unFollowOthers,
   updateAvatar,
+  updateInfo,
 } from "../controllers/userControl.js";
 import { requireLogin } from "../middleware/requireLogin.js";
 
@@ -79,6 +80,7 @@ router.get("/findPostwithhashtag", requireLogin, PostWithHashtag);
 router.patch("/addPostToPlaylist", requireLogin, addPostToPlaylist);
 router.patch("/viewPostFromPlaylist", requireLogin, viewPostFromPlaylist);
 router.patch("/removePostToPlaylist", requireLogin, removePostToPlaylist);
+router.put("/updateInfo", requireLogin, updateInfo);
 
 //Hashtag (create collection for hashtag)
 //Type (create collection for Type)

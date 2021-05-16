@@ -6,8 +6,8 @@ export const getUserPost = async (req, res) => {
   try {
     const userPosts = await UserSchema.findOne({ _id: req.params.username })
       .select("username profilePicture followers following")
-      .populate("following", "_id username profilePicture")
-      .populate("followers", "_id username profilePicture")
+      .populate("following", "_id username profilePicture followers following")
+      .populate("followers", "_id username profilePicture followers following")
       .then((user) => {
         PostSchema.find({ creator: req.params.username })
           .populate(
@@ -16,8 +16,14 @@ export const getUserPost = async (req, res) => {
           )
           .populate("comments.creator", "_id username profilePicture")
           .populate("likers", "_id username profilePicture")
-          .populate("following", "_id username profilePicture")
-          .populate("followers", "_id username profilePicture")
+          .populate(
+            "following",
+            "_id username profilePicture followers following"
+          )
+          .populate(
+            "followers",
+            "_id username profilePicture followers following"
+          )
           .sort({ createdAt: -1 })
           .exec((err, posts) => {
             if (err) {
@@ -72,8 +78,14 @@ export const followOthers = (req, res) => {
         }
       )
         .select("username profilePicture followers following email name")
-        .populate("following", "_id username profilePicture")
-        .populate("followers", "_id username profilePicture")
+        .populate(
+          "following",
+          "_id username profilePicture followers following"
+        )
+        .populate(
+          "followers",
+          "_id username profilePicture followers following"
+        )
         .then((result) => {
           res.json(result);
         })
@@ -108,8 +120,14 @@ export const unFollowOthers = (req, res) => {
         }
       )
         .select("username profilePicture followers following email name")
-        .populate("following", "_id username profilePicture")
-        .populate("followers", "_id username profilePicture")
+        .populate(
+          "following",
+          "_id username profilePicture followers following"
+        )
+        .populate(
+          "followers",
+          "_id username profilePicture followers following"
+        )
         .then((result) => {
           res.json(result);
         })
@@ -140,8 +158,8 @@ export const updateAvatar = (req, res) => {
     }
   )
     .select("username profilePicture followers following email name")
-    .populate("following", "_id username profilePicture")
-    .populate("followers", "_id username profilePicture");
+    .populate("following", "_id username profilePicture followers following")
+    .populate("followers", "_id username profilePicture followers following");
   // .then(result => {
   //     res.json(result);
   // }).catch(err => {
@@ -166,8 +184,8 @@ export const updateInfo = (req, res) => {
     }
   )
     .select("username profilePicture followers following email name")
-    .populate("following", "_id username profilePicture")
-    .populate("followers", "_id username profilePicture");
+    .populate("following", "_id username profilePicture followers following")
+    .populate("followers", "_id username profilePicture followers following");
 };
 
 // Search user
@@ -176,7 +194,9 @@ export const searchUser = (req, res) => {
   UserSchema.find({
     username: { $regex: userRegex, $options: "im" },
   })
-    .select("_id username")
+    .select("_id username ")
+    .populate("following", "_id username profilePicture followers following")
+    .populate("followers", "_id username profilePicture followers following")
     .then((user) => {
       res.json({ user });
     })

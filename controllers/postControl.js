@@ -61,7 +61,7 @@ export const createPost = (req, res) => {
     const { title, selectedFile, selectedVidFile, selectedAudFile, createdAt } =
       req.body;
     req.user.password = undefined;
-    hashtag = [...title.match(/\B(\#[a-zA-Z0-9]+\b)(?!;)/g)];
+    hashtag = [...title.match(/\B(\#[a-zA-Z0-9]+\b)(?!\.)/g)];
     const post = new PostSchema({
       title,
       hashtag,
@@ -77,10 +77,10 @@ export const createPost = (req, res) => {
         res.status(201).json(result);
       })
       .catch((err) => {
-        console.log(err);
+        res.status(500).json({ msg: err });
       });
   } catch (error) {
-    res.status(409).json({ msg: error });
+    res.status(500).json({ msg: error });
   }
 };
 

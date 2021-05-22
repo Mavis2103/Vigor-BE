@@ -30,6 +30,10 @@ const PostSchema = new Schema({
         type: ObjectId,
         ref: "User",
       },
+      createdAt: {
+        type: Date,
+        default: Date.now,
+      },
     },
   ],
   commentCount: {

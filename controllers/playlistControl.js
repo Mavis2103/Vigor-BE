@@ -80,7 +80,10 @@ export const viewPostFromPlaylist = async (req, res) => {
   const { id_playlist } = req.body;
   try {
     let playlist = await PlaylistSchema.find({ _id: id_playlist });
-    let posts = await PostSchema.find({ _id: playlist[0].songs });
+    let posts = await PostSchema.find({ _id: playlist[0].songs }).populate(
+      "creator",
+      "_id username profilePicture"
+    );
     res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({ msg: error });

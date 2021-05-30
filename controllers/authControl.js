@@ -24,7 +24,7 @@ export const signUp = async (req, res) => {
               username,
               email,
               password: hashedPassword,
-              profilePicture: `https://avatars.dicebear.com/api/identicon/${email}.svg`,
+              profilePicture: `https://image.flaticon.com/icons/png/512/1077/1077063.png`,
             });
             user
               .save()
